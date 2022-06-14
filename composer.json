@@ -1,0 +1,37 @@
+{
+    "name": "wessam/core",
+    "description": "This package introduces the main functionality for laravel project's APIs",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Core\\": "src/"
+        },
+        "files": [
+            "src/Helpers/CommonFunctions.php",
+            "src/Helpers/Constants.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Core\\CoreServiceProvider",
+                "Spatie\\Translatable\\TranslatableServiceProvider"
+            ],
+            "dont-discover": []
+        }
+    },
+    "authors": [
+        {
+            "name": "WeSSaM Jibreen",
+            "email": "wesamjibreen@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "spatie/laravel-translatable": "dev-main",
+        "tymon/jwt-auth": "1.0.x-dev",
+      "ext-curl": "*",
+        "intervention/image": "^3.0@alpha"
+    }
+}
