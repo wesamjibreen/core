@@ -5,6 +5,9 @@ namespace Core\Traits\Provider;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Facades\Log;
 
 trait Relations
 {
@@ -18,6 +21,7 @@ trait Relations
     {
         $this->hasManyMacro();
         $this->belongsToManyMacro();
+        $this->morphManyMacro();
     }
 
     /**
@@ -123,6 +127,9 @@ trait Relations
 //                }
 //                dd($q,$row);
                 unset($row['created_at']);
+                unset($row['image_url']);
+
+
                 $row['updated_at'] = Carbon::now();
                 $q->update($row);
             }
@@ -163,4 +170,19 @@ trait Relations
             $this->sync($sanitizedArr);
         });
     }
+
+    public function morphManyMacro()
+    {
+        MorphMany::macro("morphManySync", function ($data) {
+//            $relatedKeyName = $this->related->getKeyName();
+//Log::alert($relatedKeyName);
+//$ids= collect($data[0])->only('id');
+//
+//Log::info( $ids );
+//            dd('d');
+//
+        });
+    }
+
+
 }

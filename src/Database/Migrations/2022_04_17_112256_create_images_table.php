@@ -14,6 +14,7 @@ return new class extends Migration {
     {
         Schema::create('images', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->nullableMorphs('model');
             $table->string('display_name', 190);
             $table->string('file_name', 190);
             $table->string('extension', 190)->nullable();

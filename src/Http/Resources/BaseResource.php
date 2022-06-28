@@ -29,9 +29,9 @@ class BaseResource extends JsonResource
     {
         $data = array('id' => $this->id);
         collect($this->fillable())->each(function ($attribute) use (&$data) {
+            // if (in_array($attribute,$this->translatable()))
             $data[$attribute] = $this->{$attribute};
-            if (in_array($attribute, $this->imageable()) && $value = $this->{$attribute})
-                $data[$attribute . "_url"] = image_url($value);
+            if (in_array($attribute, $this->imageable()) && $value = $this->{$attribute}) $data[$attribute . "_url"] = image_url($value);
         });
         return $data;
     }
@@ -109,5 +109,11 @@ class BaseResource extends JsonResource
     public function fillable(): array
     {
         return $this->resource->getFillable() ?? [];
+    }
+
+
+    public function __call($method, $parameters)
+    {
+        return $this->toArray(request());
     }
 }

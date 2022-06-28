@@ -12,7 +12,7 @@ trait Routing
      */
     public function resourceRoutes()
     {
-        Route::macro('resourceRoutes', function ($resource, $controller, $function = null) {
+        Route::macro('dashboardResource', function ($resource, $controller, $function = null) {
             /**
              * Generate resource default rest-full routes
              *
@@ -24,6 +24,7 @@ trait Routing
             Route::resource($resource, $controller);
             Route::patch($resource . '/delete/group', $controller . '@deleteGroup');
             Route::match(["put", "patch"], "$resource/{id}/status", "$controller@updateStatus");
+            Route::match(["put", "post"], "$resource/ordering", "$controller@ordering");
             if (is_callable($function))
                 Route::group(['prefix' => $resource], function () use ($function, $controller, $resource) {
                     call_user_func($function, $controller, $resource);

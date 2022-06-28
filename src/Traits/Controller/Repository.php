@@ -24,7 +24,8 @@ trait Repository
         $this->setRepository(
             (new $this->repository)
                 ->setModel($this->model)
-                ->init());
+                ->init($this->repositoryConfig));
+
         return $this;
     }
 

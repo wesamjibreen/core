@@ -67,6 +67,7 @@ class CoreHandler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+//        dd($exception);
         if ($request->isJson() || $request->is('api/*')) {
 //            dd($exception);
             $message = $exception->getMessage() ?? trans("core::messages.unknown_error");

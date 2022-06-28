@@ -27,7 +27,7 @@ use Messaging\MessagingServiceProvider;
 
 class CoreServiceProvider extends ServiceProvider
 {
-    use RoutingMacro, ResponseMacro, Exception , Relations;
+    use RoutingMacro, ResponseMacro, Exception, Relations;
 
     /**
      * list of package's helpers
@@ -49,22 +49,8 @@ class CoreServiceProvider extends ServiceProvider
     {
         $this->bindingCustomException();
         $this->registerHelpers();
-        $this->app->register(MessagingServiceProvider::class);
-//        $this->app->extend(BaseRepository::class, function ($repository, $app) {
-//
-//            dd($repository);
-////            return new DecoratedService($repository);
-//        });
-
-//        $this->app->when(RepositoryInterface::class)
-//            ->needs('$imageManager')->give(function () {
-//                return new ImageService;
-//            });
-
-//        $this->app->bind(RepositoryInterface::class, function () {
-//            dd('RepositoryInterface');
-//            return new BaseRepository(new ImageService);
-//        });
+        if (class_exists(MessagingServiceProvider::class))
+            $this->app->register(MessagingServiceProvider::class);
     }
 
     /**
@@ -134,10 +120,11 @@ class CoreServiceProvider extends ServiceProvider
          */
         $this->responseMacro();
 
-
+        /**
+         * call relationsMacro Macro  @author WeSSaM
+         */
         $this->relationsMacro();
     }
-
 
 
 }

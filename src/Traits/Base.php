@@ -23,20 +23,6 @@ trait Base
     protected string $resourceName = "";
 
     /**
-     * set new value if property exists
-     *
-     * @param $attribute
-     * @param $value
-     * @return Base
-     * @author WeSSaM
-     */
-    public function conditionalSet($attribute, $value): static
-    {
-        if (!$this->{$attribute}) $this->{$attribute} = $value;
-        return $this;
-    }
-
-    /**
      * get current route method
      *
      * @return string|null
@@ -95,7 +81,6 @@ trait Base
      * build predicted class path based on current module name and parsed type
      *
      * @param $type
-     * @param null $resourceName
      * @return mixed
      * @author WeSSaM
      */

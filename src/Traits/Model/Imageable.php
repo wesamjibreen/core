@@ -2,6 +2,8 @@
 
 namespace Core\Traits\Model;
 
+use Core\Models\Image;
+
 trait Imageable
 {
     /**
@@ -27,4 +29,6 @@ trait Imageable
         $this->imageable = $imageable;
         return $this;
     }
+
+
 }

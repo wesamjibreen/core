@@ -32,4 +32,8 @@ class Image extends BaseModel
     {
         return image_url($this->file_name);
     }
+    public function imageable(): \Illuminate\Database\Eloquent\Relations\MorphTo
+    {
+        return $this->morphTo('model');
+    }
 }

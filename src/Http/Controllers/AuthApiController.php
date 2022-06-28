@@ -70,12 +70,11 @@ class AuthApiController extends Controller
             throw new AuthenticationException(__('Core::messages.invalid_credential'));
 
         $this->authenticated($token);
-
         return response()->success(__('Core::messages.successfully_logged_in'), [
             'access_token' => $token,
             'expires_in' => $this->guard()->factory()->getTTL() * 60,
             'token_type' => 'Bearer',
-            'auth' => new $this->resource($this->guard()->user()),
+            'auth' => new AuthResource($this->guard()->user()),
         ]);
     }
 

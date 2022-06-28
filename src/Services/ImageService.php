@@ -5,7 +5,6 @@ namespace Core\Services;
 use Core\Exceptions\DeleteException;
 use Core\Exceptions\UploadingException;
 use Core\Models\Image;
-use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Modules\Core\Exceptions\UploadErrorException;
@@ -79,11 +78,8 @@ class ImageService
     }
 
     /**
-     * Storing new record with data for uploaded image
-     *
      * @param $data
      * @return mixed
-     * @author WeSSaM
      */
     public function saveToModel($data): mixed
     {
@@ -101,6 +97,7 @@ class ImageService
         return $image->storeAs("public/$this->path/$this->folder", $filename);
     }
 
+
     /**
      * @param $extension
      * @return string
@@ -108,34 +105,6 @@ class ImageService
     public function createUniqueFilename($extension)
     {
         return 'image_' . time() . mt_rand() . '.' . $extension;
-    }
-
-    /**
-     * Remove from storage according to parsed filename
-     *
-     * @param $filename
-     * @return bool
-     * @throws UploadingException
-     * @author Omar
-     */
-    public function removeFromStorage($filename): bool
-    {
-        $fullPath = "$this->path/$this->folder/$filename";
-        if ( !$this->storage()->exists($fullPath))
-            throw  new UploadingException(__('Core::messages.delete_storage_error_exception'), 500);
-        return $this->storage()->delete($fullPath);
-    }
-
-
-    /**
-     * Get storage's instance based on current disk value
-     *
-     * @return Filesystem
-     * @author Omar
-     */
-    public function storage(): Filesystem
-    {
-        return Storage::disk($this->disk);
     }
 
     /**
@@ -154,5 +123,20 @@ class ImageService
     public function getFolder(): string
     {
         return $this->folder;
+    }
+
+    public function removeFromStorage($filename)
+    {
+        $fullPath = "$this->path/$this->folder/$filename";
+        if ( !$this->storage()->exists($fullPath))
+            throw  new UploadingException(__('Core::messages.delete_storage_error_exception'), 500);
+        return $this->storage()->delete($fullPath);
+//        return Storage::delete($fullPath);
+    }
+
+
+    public function storage(): \Illuminate\Contracts\Filesystem\Filesystem
+    {
+        return Storage::disk($this->disk);
     }
 }

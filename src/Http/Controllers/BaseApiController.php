@@ -23,6 +23,14 @@ class BaseApiController extends Controller
         Hooks;
 
     /**
+     * default repository attributes config
+     *
+     * @var array
+     * @author WeSSaM
+     */
+    protected array $repositoryConfig = [];
+
+    /**
      * BaseApiController Constructor
      * @author WeSSaM
      */
@@ -53,6 +61,19 @@ class BaseApiController extends Controller
             return $this->$name;
     }
 
+    /**
+     * set new value if property exists
+     *
+     * @param $attribute
+     * @param $value
+     * @return BaseApiController
+     * @author WeSSaM
+     */
+    public function conditionalSet($attribute, $value): static
+    {
+        if (!$this->{$attribute}) $this->{$attribute} = $value;
+        return $this;
+    }
 
     /**
      * storing new record in resource's table

@@ -14,10 +14,19 @@ trait Query
 
     /**
      * the way records should be ordered by
+     *
      * @author WeSSaM
      * @var string
      */
     protected string $orderBy = 'desc';
+
+    /**
+     * Column to store ordering index on db
+     *
+     * @author WeSSaM
+     * @var string
+     */
+    protected string $orderingColumn = "position";
 
     /**
      * @return string
@@ -33,6 +42,26 @@ trait Query
     public function getOrderBy(): string
     {
         return $this->orderBy;
+    }
+
+    /**
+     * @param string $orderedColumn
+     * @return Query
+     */
+    public function setOrderedColumn(string $orderedColumn): static
+    {
+        $this->orderedColumn = $orderedColumn;
+        return $this;
+    }
+
+    /**
+     * @param string $orderBy
+     * @return static
+     */
+    public function setOrderBy(string $orderBy): static
+    {
+        $this->orderBy = $orderBy;
+        return $this;
     }
 
     /**
@@ -54,7 +83,7 @@ trait Query
      */
     protected function query()
     {
-        return $this->__loadQuery()->with($this->__loadRelation());
+        return $this->__loadQuery()->with($this->__loadRelation())->orderBy($this->orderedColumn, $this->orderBy);
     }
 
     /**

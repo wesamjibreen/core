@@ -13,12 +13,14 @@ use Core\Traits\Repository\CRUD;
 use Core\Traits\Repository\Query;
 use Core\Traits\Repository\Imageable;
 use Core\Traits\Repository\Relations;
+use Illuminate\Support\Collection;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 class BaseRepository implements RepositoryInterface
 {
-    use Base, CRUD, Hooks, Query, Model, Relations,Imageable;
+    use Base, CRUD, Hooks, Query, Model, Relations, Imageable;
+
 
 
     /**
@@ -31,9 +33,32 @@ class BaseRepository implements RepositoryInterface
 
     }
 
-    public function init(): static
+    /**
+     * repository initialization
+     *
+     * @param array $repositoryConfig
+     * @return static
+     * @author WeSSaM
+     */
+    public function init(array $repositoryConfig = []): static
     {
         $this->imageManager = new ImageManager;
+        return $this->setConfig($repositoryConfig);
+    }
+
+
+    /**
+     * set parsed config from controller to repo.s attributes
+     *
+     * @param array $repositoryConfig
+     * @return static
+     * @author WeSSaM
+     */
+    public function setConfig(array $repositoryConfig = []): static
+    {
+        foreach ($repositoryConfig as $key => $value) {
+            $this->$key = $value;
+        }
         return $this;
     }
 
@@ -102,5 +127,26 @@ class BaseRepository implements RepositoryInterface
             request()->only($this->getFillable()),
             $this->handleImageableAttributes()
         );
+    }
+
+
+    /**
+     * update models position by index
+     *
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @author WeSSaM
+     */
+    public function ordering(): Collection
+    {
+        $data = request()->get("items", []);
+        $models = collect([]);
+        foreach ($data as $index => $item) {
+            $model = $this->modelInstance()->find($item['id']);
+            if (!isset($model)) break;
+            $model->update([$this->orderingColumn => $index]);
+            $models->add($model);
+        }
+        return $models;
     }
 }

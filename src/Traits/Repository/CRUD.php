@@ -3,6 +3,7 @@
 namespace Core\Traits\Repository;
 
 use Core\Exceptions\UploadingException;
+use Illuminate\Support\Facades\Log;
 
 trait CRUD
 {
@@ -25,6 +26,7 @@ trait CRUD
      */
     public function store(): mixed
     {
+        Log::info($this->sanitizeAttributes());
         return $this->created($this->model::create($this->sanitizeAttributes()));
     }
 
